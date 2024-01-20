@@ -1,0 +1,26 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p {
+    font-size: 25px;
+}
+
+button {
+    display: block;
+    padding: 15px;
+    margin: 20px;
+    font-size: 20px;
+    background-color: #2A6422;
+    color:#DCE7B9;
+    box-shadow: 0 5px 5px 0 rgb(from color r g b);
+}
+
+.container {
+    display: block;
+    box-sizing: border-box;
+    text-align: center;
+    margin: auto;
+    max-width: 75%;
+    align-items: center;
+}
