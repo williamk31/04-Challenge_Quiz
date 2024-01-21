@@ -171,7 +171,7 @@ function setTime() {
         secondsLeft--;
         timeEl.textContent = "Time: " + secondsLeft;
         //calls functions when timer runs out
-        if(secondsLeft === 0) {
+        if(secondsLeft <= 0) {
             clearInterval(timeInterval);
             displayMessage();
             removeButtons();
