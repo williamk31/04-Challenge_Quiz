@@ -106,11 +106,13 @@ var questionData = [
     }
 ] 
 
-//get previous high scores from local storage
+//function to show previous high scores
 function renderHighScores(){
+    //grabs high scores from local storage or an empty array if no high scores
     var storedScores = JSON.parse(localStorage.getItem
         ("highscore")) || [];
-        var viewHighScores = document.querySelector(".view-highscore")
+        var viewHighScores = document.querySelector(".view-highscore");
+        //displays all previous high scores
     for (i=0; i<storedScores.length; i++){
         var hiScoreName = document.createElement("p");
         hiScoreName.textContent = storedScores[i].initials;
@@ -125,23 +127,15 @@ function renderHighScores(){
         hiScoreInc.textContent = storedScores[i].incorrect;
         viewHighScores.appendChild(hiScoreInc);
     }
-    
-    // score.correct = localStorage.getItem("correct")
-    // score.incorrect = localStorage.getItem("incorrect")
-    // displayScore.textContent = "Correct: " + score.correct + "; Incorrect: " + score.incorrect;
 }
 
+//listens for a click on "View High Score"
 displayScore.addEventListener("click", function(event){
+    //calls the display high score function
     displayHighScore()
-    // console.log("hello");
-    // document.querySelector(".container").style.display = "none";
-    // var viewHighScores = document.querySelector(".view-highscore")
-    // var h1El = document.createElement("h1")
-    // h1El.textContent = "High Scores"
-    // viewHighScores.appendChild(h1El);
-    // renderHighScores();
 })
 
+//function to display high scores
 function displayHighScore(){
     document.querySelector(".container").style.display = "none";
     var viewHighScores = document.querySelector(".view-highscore")
@@ -151,14 +145,11 @@ function displayHighScore(){
     renderHighScores();
 }
 
-
 //Sets text to introduction on website load
 function init() {
     questionName.textContent = "JavaScript Knowledge Quiz";
     questionText.textContent = "This quiz is designed to test your JavaScript knowledge. You will have 60 seconds to complete the quiz once you hit the start button. If you answer a question incorrectly, 5 seconds will be taken off the clock."
     buttons.appendChild(startButton);
-    //call the function to display previous scores
-    // renderHighScores();
 }
 init();
 
@@ -169,8 +160,6 @@ startButton.addEventListener("click", function(event) {
     setTime();
     //calls the function to create buttons
     createButtons(questionIdx);
-    //calls the function to populate answer buttons with text
-    // questionCards(questionIdx);
     //removes startButton
     buttons.removeChild(startButton);
 }
@@ -178,7 +167,6 @@ startButton.addEventListener("click", function(event) {
 
 //sets timer to one minute and begins countdown
 function setTime() {
-   
     var timeInterval = setInterval(function (){
         secondsLeft--;
         timeEl.textContent = "Time: " + secondsLeft;
@@ -197,7 +185,7 @@ function setTime() {
 
 //Displays message when time is up that the game is over
 function displayMessage() {
-    window.alert("Time's Up! You Lose!");
+    window.alert("Time's Up!");
 }
 
 //creates answer buttons
@@ -234,11 +222,13 @@ function createButtons(initialQuestion) {
             secondsLeft-=5;
         }
         console.log(score);
-        //advances us to the next question
+        //advances to the next question
         questionIdx++;
         advanceToNextQuestion(questionIdx);
     })
 }
+
+//creates function to remove answer buttons
 function removeButtons(){
     var button1 = document.getElementById("button-1");
     var button2 = document.getElementById("button-2");
@@ -250,20 +240,11 @@ function removeButtons(){
     button4.parentElement.removeChild(button4);
 }
 
-
 //populates answer buttons with text for each question
 function advanceToNextQuestion(questionIdx){
     if(questionIdx > questionData.length-1) {
         //removes answer buttons before displaying results
         removeButtons()
-        // var button1 = document.getElementById("button-1");
-        // var button2 = document.getElementById("button-2");
-        // var button3 = document.getElementById("button-3");
-        // var button4 = document.getElementById("button-4");
-        // button1.parentElement.removeChild(button1);
-        // button2.parentElement.removeChild(button2);
-        // button3.parentElement.removeChild(button3);
-        // button4.parentElement.removeChild(button4);
         results()
     }else{
         //set next question
@@ -276,6 +257,7 @@ function advanceToNextQuestion(questionIdx){
     }   
 }
 
+//creates the function to display results
 function results(){
     questionName.textContent = "Quiz Complete! Your High Score: " + secondsLeft;
     questionText.textContent = "Correct: " + score.correct + "; Incorrect: " + score.incorrect;

@@ -25,6 +25,16 @@ button {
     align-items: center;
 }
 
+.timer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.highscore{
+    display: flex;
+    text-align: left;
+}
+
 #submit {
     padding: 15px;
     margin: 20px;
