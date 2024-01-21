@@ -14,7 +14,7 @@ var score = {
     correct: 0,
     incorrect: 0,
 }
-
+var allScores = JSON.parse(localStorage.getItem("highscore")) || [];
 var highScores = {
     initials: "",
     score: "",
@@ -108,13 +108,47 @@ var questionData = [
 
 //get previous high scores from local storage
 function renderHighScores(){
-    var storedScores = JSON.parse(localStorage.getItem("highscore"));
-    if(storedScores !== null) {
-        highScores = storedScores;
+    var storedScores = JSON.parse(localStorage.getItem
+        ("highscore")) || [];
+        var viewHighScores = document.querySelector(".view-highscore")
+    for (i=0; i<storedScores.length; i++){
+        var hiScoreName = document.createElement("p");
+        hiScoreName.textContent = storedScores[i].initials;
+        viewHighScores.appendChild(hiScoreName);
+        var hiScoreTime = document.createElement("p");
+        hiScoreTime.textContent = storedScores[i].score;
+        viewHighScores.appendChild(hiScoreTime);
+        var hiScoreCor = document.createElement("p");
+        hiScoreCor.textContent = storedScores[i].correct;
+        viewHighScores.appendChild(hiScoreCor);
+        var hiScoreInc = document.createElement("p");
+        hiScoreInc.textContent = storedScores[i].incorrect;
+        viewHighScores.appendChild(hiScoreInc);
     }
+    
     // score.correct = localStorage.getItem("correct")
     // score.incorrect = localStorage.getItem("incorrect")
     // displayScore.textContent = "Correct: " + score.correct + "; Incorrect: " + score.incorrect;
+}
+
+displayScore.addEventListener("click", function(event){
+    displayHighScore()
+    // console.log("hello");
+    // document.querySelector(".container").style.display = "none";
+    // var viewHighScores = document.querySelector(".view-highscore")
+    // var h1El = document.createElement("h1")
+    // h1El.textContent = "High Scores"
+    // viewHighScores.appendChild(h1El);
+    // renderHighScores();
+})
+
+function displayHighScore(){
+    document.querySelector(".container").style.display = "none";
+    var viewHighScores = document.querySelector(".view-highscore")
+    var h1El = document.createElement("h1")
+    h1El.textContent = "High Scores"
+    viewHighScores.appendChild(h1El);
+    renderHighScores();
 }
 
 
@@ -124,7 +158,7 @@ function init() {
     questionText.textContent = "This quiz is designed to test your JavaScript knowledge. You will have 60 seconds to complete the quiz once you hit the start button. If you answer a question incorrectly, 5 seconds will be taken off the clock."
     buttons.appendChild(startButton);
     //call the function to display previous scores
-    renderHighScores();
+    // renderHighScores();
 }
 init();
 
@@ -152,10 +186,11 @@ function setTime() {
         if(secondsLeft === 0) {
             clearInterval(timeInterval);
             displayMessage();
+            removeButtons();
             results();
         }if(questionIdx > questionData.length-1) {
             clearInterval(timeInterval);
-            results();
+            // results();
         }
     },1000);
 }
@@ -204,10 +239,31 @@ function createButtons(initialQuestion) {
         advanceToNextQuestion(questionIdx);
     })
 }
+function removeButtons(){
+    var button1 = document.getElementById("button-1");
+    var button2 = document.getElementById("button-2");
+    var button3 = document.getElementById("button-3");
+    var button4 = document.getElementById("button-4");
+    button1.parentElement.removeChild(button1);
+    button2.parentElement.removeChild(button2);
+    button3.parentElement.removeChild(button3);
+    button4.parentElement.removeChild(button4);
+}
+
 
 //populates answer buttons with text for each question
 function advanceToNextQuestion(questionIdx){
     if(questionIdx > questionData.length-1) {
+        //removes answer buttons before displaying results
+        removeButtons()
+        // var button1 = document.getElementById("button-1");
+        // var button2 = document.getElementById("button-2");
+        // var button3 = document.getElementById("button-3");
+        // var button4 = document.getElementById("button-4");
+        // button1.parentElement.removeChild(button1);
+        // button2.parentElement.removeChild(button2);
+        // button3.parentElement.removeChild(button3);
+        // button4.parentElement.removeChild(button4);
         results()
     }else{
         //set next question
@@ -225,43 +281,34 @@ function results(){
     questionText.textContent = "Correct: " + score.correct + "; Incorrect: " + score.incorrect;
     //removes answerKey text
     answerKey.textContent = "";
-    //removes answer buttons
-    var button1 = document.getElementById("button-1");
-    var button2 = document.getElementById("button-2");
-    var button3 = document.getElementById("button-3");
-    var button4 = document.getElementById("button-4");
-    button1.parentElement.removeChild(button1);
-    button2.parentElement.removeChild(button2);
-    button3.parentElement.removeChild(button3);
-    button4.parentElement.removeChild(button4);
-    //creates form to enter initials
+    //creates input form for initials
     var formIntls = document.createElement("form");
     formIntls.setAttribute("id", "input-initials");
-    formIntls.setAttribute("method", "POST");
     var inputIntls = document.createElement("input");
     inputIntls.setAttribute("type", "text");
     inputIntls.setAttribute("placeholder", "Enter your initials");
     inputIntls.setAttribute("id", "input-text")
     var submitIntls = document.createElement("input");
     submitIntls.setAttribute("type", "submit");
-    submitIntls.setAttribute("value", "Enter")
-    var inputText = document.getElementById("input-text")
+    submitIntls.setAttribute("value", "Enter");
+    submitIntls.setAttribute("id", "submit");
+    var inputText = document.getElementById("input-text");
     inputForm.appendChild(formIntls);
     formIntls.appendChild(inputIntls);
     inputForm.appendChild(submitIntls);
-    formIntls.addEventListener("submit", function(event){
+    submitIntls.addEventListener("click", function(event){
         event.preventDefault();
-        highScores.initials.textContent = inputText.value.trim();
-        highScores.correct.textContent = score.correct;
-        highScores.incorrect.textContent = score.incorrect;
-        highScores.score.textContent = secondsLeft;
+        highScores.initials = inputIntls.value.trim();
+        highScores.correct = score.correct;
+        highScores.incorrect = score.incorrect;
+        highScores.score = secondsLeft;
         storeHighScore()
+        displayHighScore()
     })
 }
 
 //store high scores to local storage
 function storeHighScore() {
-    localStorage.setItem("highscore", JSON.stringify(highScores));
+    allScores.push(highScores)
+    localStorage.setItem("highscore", JSON.stringify(allScores));
 }
-// localStorage.setItem("correct", score.correct)
-// localStorage.setItem("incorrect", score.incorrect)
