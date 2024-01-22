@@ -114,18 +114,21 @@ function renderHighScores(){
         var viewHighScores = document.querySelector(".view-highscore");
         //displays all previous high scores
     for (i=0; i<storedScores.length; i++){
+        var score = document.createElement("div");
+        score.setAttribute('class', 'score');
+        viewHighScores.appendChild(score);
         var hiScoreName = document.createElement("p");
         hiScoreName.textContent = storedScores[i].initials;
-        viewHighScores.appendChild(hiScoreName);
+        score.appendChild(hiScoreName);
         var hiScoreTime = document.createElement("p");
         hiScoreTime.textContent = storedScores[i].score;
-        viewHighScores.appendChild(hiScoreTime);
+        score.appendChild(hiScoreTime);
         var hiScoreCor = document.createElement("p");
         hiScoreCor.textContent = storedScores[i].correct;
-        viewHighScores.appendChild(hiScoreCor);
+        score.appendChild(hiScoreCor);
         var hiScoreInc = document.createElement("p");
         hiScoreInc.textContent = storedScores[i].incorrect;
-        viewHighScores.appendChild(hiScoreInc);
+        score.appendChild(hiScoreInc);
     }
 }
 
@@ -142,6 +145,21 @@ function displayHighScore(){
     var h1El = document.createElement("h1")
     h1El.textContent = "High Scores"
     viewHighScores.appendChild(h1El);
+    var scoresHeader = document.createElement("div");
+    scoresHeader.setAttribute("class", "score-labels")
+    viewHighScores.appendChild(scoresHeader);
+    var nameColumn = document.createElement("div")
+    nameColumn.textContent = "Name";
+    var highScoreColumn = document.createElement("div");
+    highScoreColumn.textContent = "High Score";
+    var correctColumn = document.createElement("div");
+    correctColumn.textContent = "Correct";
+    var incorrectColumn = document.createElement("div");
+    incorrectColumn.textContent = "Incorrect";
+    scoresHeader.appendChild(nameColumn);
+    scoresHeader.appendChild(highScoreColumn);
+    scoresHeader.appendChild(correctColumn);
+    scoresHeader.appendChild(incorrectColumn);
     renderHighScores();
 }
 

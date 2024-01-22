@@ -16,23 +16,47 @@ button {
     box-shadow: 0 5px 5px 0 rgb(from color r g b);
 }
 
+.header{
+    display:flex;
+    justify-content: space-between;
+    padding: 8px;
+}
+
+.view-highscore{
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+
+.view-highscore > .score {
+    display: flex;
+}
+
+.view-highscore > .score-labels{
+    display: flex;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.score, .score-labels {
+    justify-content: space-evenly;
+}
+
+.score > p, .score-labels > div {
+    width: 150px;
+}
+
+h1 {
+    text-align: center;
+}
+
 .container {
     display: block;
     box-sizing: border-box;
     text-align: center;
     margin: auto;
-    max-width: 75%;
+    max-width: 50%;
     align-items: center;
-}
-
-.timer{
-    display: flex;
-    justify-content: space-between;
-}
-
-.highscore{
-    display: flex;
-    text-align: left;
 }
 
 #submit {
